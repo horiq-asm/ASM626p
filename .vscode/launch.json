@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Pico Debug",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "openocd",
+      "serverpath": "C:/Program Files/Raspberry Pi/Pico SDK v1.5.1/openocd/openocd.exe",
+      "cwd": "${workspaceFolder}",
+      "executable": "${workspaceFolder}/build/asm626.elf",
+      "device": "RP2040",
+      "gdbPath": "C:/Program Files/Raspberry Pi/Pico SDK v1.5.1/gcc-arm-none-eabi/bin/arm-none-eabi-gdb.exe",
+      "configFiles": [
+        "interface/cmsis-dap.cfg",
+        "target/rp2040.cfg"
+      ],
+      "searchDir": [
+        "C:/Program Files/Raspberry Pi/Pico SDK v1.5.1/openocd/scripts"
+      ],
+      "openOCDLaunchCommands": [
+        "adapter speed 1000"
+      ],
+      "svdFile": "C:/Program Files/Raspberry Pi/Pico SDK v1.5.1/pico-sdk/src/rp2040/hardware_regs/rp2040.svd",
+      "runToEntryPoint": "main",
+      "showDevDebugOutput": "raw"
+    }
+  ]
+}
