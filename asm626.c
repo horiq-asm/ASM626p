@@ -142,13 +142,13 @@ uint32_t readIR20()
 {
     uint32_t d = 0;
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 15; i++) {
         int first, second;
         sleep_us(500);
         p[i]=irBit();
-        d*=2;
-        if (irBit()==0) 
-            d|=1;
+        d <<=1;
+        if (p[i]) 
+            d |=1;
         gpio_put(check_PIN, 1);                 
         gpio_put(check_PIN, 0);
         sleep_us(500);
@@ -292,11 +292,17 @@ printf("START\n");
 	            TIMER7 = 100;
 	        }
         }
-     
+ uint32_t c_hour, c_min;    
     if(waitIRStart()){
         ir_data=readIR20();
+        c_hour=ir_data >>8 & 0x1f;
+        c_min=ir_data & 0x3f;
+        t.hour=c_hour;
+        t.min=c_min;
+        rtc_set_datetime(&t);
+        TIMER7 = 100;
         __asm volatile("nop");   // ここにブレーク
-        printf("OK  0x%05lx\n", ir_data);
+
     }
     }//////////////////
     puts("Hello, world!");

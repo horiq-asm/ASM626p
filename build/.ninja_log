@@ -17,7 +17,7 @@
 460	1086	8041770293666803	CMakeFiles/asm626.dir/CMT.c.obj	b1779e7d68fc72b8
 2436	2877	8041770311740749	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/pico_malloc/pico_malloc.c.obj	b35e63306a2ac322
 503	1101	8041770293847511	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj	b78072c0b76beb48
-43	339	8042684329148752	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
+30	283	8043318982329302	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
 2719	3089	8041770313891945	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/hardware_rtc/rtc.c.obj	aa339a383c08bb4e
 864	1309	8041770295694941	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/common/pico_sync/lock_core.c.obj	c8eb6c5b9dd909d2
 993	1403	8041770296785539	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/common/pico_time/timeout_helper.c.obj	a22ec39d0ec552d2
@@ -53,16 +53,4 @@
 2576	2983	8041770312761433	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj	85e2289bec2f9939
 2479	3083	8041770313827969	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj	1e1ba7fc8076e58d
 2618	3115	8041770314191139	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj	4586a8343f49d20a
-340	837	8042684332234787	asm626.elf	c46412c1f6c94107
-28	775	8043187610436453	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
-776	1806	8043187618280151	asm626.elf	c46412c1f6c94107
-50	302	8043188636631389	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
-303	698	8043188639188030	asm626.elf	c46412c1f6c94107
-31	286	8043189954965180	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
-287	691	8043189957451151	asm626.elf	c46412c1f6c94107
-32	306	8043198853442411	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
-308	719	8043198855862961	asm626.elf	c46412c1f6c94107
-35	335	8043227207529172	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
-336	829	8043227210535673	asm626.elf	c46412c1f6c94107
-38	304	8043233714048437	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
-305	770	8043233716753390	asm626.elf	c46412c1f6c94107
+283	757	8043318984689636	asm626.elf	c46412c1f6c94107
