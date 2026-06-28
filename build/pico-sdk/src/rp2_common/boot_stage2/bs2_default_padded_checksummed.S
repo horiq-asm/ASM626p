@@ -1,4 +1,4 @@
-// Padded and checksummed version of: C:/Users/asm/Desktop/asm626/build/pico-sdk/src/rp2_common/boot_stage2/bs2_default.bin
+// Padded and checksummed version of: C:/Users/admin/Documents/ASM626p/build/pico-sdk/src/rp2_common/boot_stage2/bs2_default.bin
 
 .cpu cortex-m0plus
 .thumb

@@ -61,7 +61,6 @@ int read_manchester_20bit(uint32_t *out)
     *out = data & 0xFFFFF;
     return 1;
 }
-#define IR_RX_PIN 10
 
 uint8_t irBit(void)
 {
@@ -72,61 +71,87 @@ uint8_t irBit(void)
         return (0); // bit後半で反転しているか確認
 }
 
-#define IR_RX_PIN 10
 
 int waitIRStart1(void)
 {
     absolute_time_t t0;
     while (gpio_get(IR_RX_PIN))
         tight_loop_contents();
+    return 1;
 }
+
 int waitIRStart(void)
 {
     absolute_time_t t0;
 
+    //====================================================
+    // 1. 開始後20ms以内にLOWが来なければタイムアウト
+    //====================================================
+    t0 = get_absolute_time();
+
+    while (gpio_get(IR_RX_PIN)) {   // HIGHの間待つ
+        if (absolute_time_diff_us(t0, get_absolute_time()) >= 20000)
+            return 0;
+    }
+
+    //====================================================
+    // 2. LOW後、10ms以上連続HIGHにならなければタイムアウト
+    //====================================================
     while (1) {
 
         // HIGH待ち
-        while (gpio_get(IR_RX_PIN) == 0)
-            tight_loop_contents();
+        while (gpio_get(IR_RX_PIN) == 0) {
+            if (absolute_time_diff_us(t0, get_absolute_time()) >= 50000)
+                return 0;
+        }
 
         // HIGH開始時刻
-        t0 = get_absolute_time();
+        absolute_time_t th = get_absolute_time();
 
         // HIGH継続監視
         while (gpio_get(IR_RX_PIN)) {
 
-            if (absolute_time_diff_us(t0, get_absolute_time()) >= 5000) {
+            // 10ms以上HIGHなら次のLOW待ちへ
+            if (absolute_time_diff_us(th, get_absolute_time()) >= 10000)
+                goto WAIT_LOW;
 
-                // 5ms以上HIGHだった
-                while (gpio_get(IR_RX_PIN)){
-                    tight_loop_contents();
-                    if(absolute_time_diff_us(t0, get_absolute_time())>= 50000)
-                        return 0;// 10ms以上HIGHだったので無信号
-                }// LOWになった
-                return 1;
-            }
+            // 全体タイムアウト
+            if (absolute_time_diff_us(t0, get_absolute_time()) >= 50000)
+                return 0;
         }
 
-        // 5ms未満でLOWになったのでやり直し
+        // HIGHが10ms未満で終わったのでやり直し
     }
+
+WAIT_LOW:
+
+    //====================================================
+    // 3. 10ms以上HIGHの後、LOWを検出したら成功
+    //====================================================
+    while (gpio_get(IR_RX_PIN))
+        tight_loop_contents();
+    return 1;
 }
 
-#define check_PIN 11
+
+//#define check_PIN 11 relaybit
+#define check_PIN 4  /* LED bit1 */
+uint8_t p[20];
 uint32_t readIR20()
 
 {
     uint32_t d = 0;
-    uint8_t p[20];
+
     for (int i = 0; i < 20; i++) {
         int first, second;
-        sleep_us(250);
-        d<<=1;
-        if (irBit()) 
-            d++;
-        gpio_put(check_PIN, 1);
+        sleep_us(500);
+        p[i]=irBit();
+        d*=2;
+        if (irBit()==0) 
+            d|=1;
+        gpio_put(check_PIN, 1);                 
         gpio_put(check_PIN, 0);
-        sleep_us(250);
+        sleep_us(500);
     }
 
     return(d & 0xFFFFF);
@@ -268,7 +293,7 @@ printf("START\n");
 	        }
         }
      
-    if(waitIRStart1()){
+    if(waitIRStart()){
         ir_data=readIR20();
         __asm volatile("nop");   // ここにブレーク
         printf("OK  0x%05lx\n", ir_data);

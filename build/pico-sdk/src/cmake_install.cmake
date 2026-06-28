@@ -39,9 +39,9 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/asm/Desktop/asm626/build/pico-sdk/src/common/cmake_install.cmake")
-  include("C:/Users/asm/Desktop/asm626/build/pico-sdk/src/rp2_common/cmake_install.cmake")
-  include("C:/Users/asm/Desktop/asm626/build/pico-sdk/src/rp2040/cmake_install.cmake")
+  include("C:/Users/admin/Documents/ASM626p/build/pico-sdk/src/common/cmake_install.cmake")
+  include("C:/Users/admin/Documents/ASM626p/build/pico-sdk/src/rp2_common/cmake_install.cmake")
+  include("C:/Users/admin/Documents/ASM626p/build/pico-sdk/src/rp2040/cmake_install.cmake")
 
 endif()
 
