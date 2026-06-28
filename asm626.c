@@ -300,7 +300,7 @@ printf("START\n");
         t.hour=c_hour;
         t.min=c_min;
         rtc_set_datetime(&t);
-        TIMER7 = 100;
+        TIMER4 = 20;   // Led display time 10sec
         __asm volatile("nop");   // ここにブレーク
 
     }

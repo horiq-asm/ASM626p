@@ -54,3 +54,5 @@
 2479	3083	8041770313827969	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj	1e1ba7fc8076e58d
 2618	3115	8041770314191139	CMakeFiles/asm626.dir/C_/Program_Files/Raspberry_Pi/Pico_SDK_v1.5.1/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj	4586a8343f49d20a
 283	757	8043318984689636	asm626.elf	c46412c1f6c94107
+26	278	8043439855807425	CMakeFiles/asm626.dir/asm626.c.obj	2830639f8dd6db85
+279	733	8043439858487969	asm626.elf	c46412c1f6c94107
