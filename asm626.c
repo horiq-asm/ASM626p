@@ -75,11 +75,21 @@ uint8_t irBit(void)
 int waitIRStart1(void)
 {
     absolute_time_t t0;
-    while (gpio_get(IR_RX_PIN))
-        tight_loop_contents();
+    while (gpio_get(IR_RX_PIN)){
+        if (absolute_time_diff_us(t0, get_absolute_time()) >= 80000)
+            return 0;
+    }
     return 1;
 }
-
+int waitIREND(void)
+{
+    absolute_time_t t0;
+    while (gpio_get(IR_RX_PIN)) {   // HIGHの間待つ
+        if (absolute_time_diff_us(t0, get_absolute_time()) >= 80000)
+            return 0;
+    }
+    return 1;
+}
 int waitIRStart(void)
 {
     absolute_time_t t0;
@@ -133,29 +143,6 @@ WAIT_LOW:
     return 1;
 }
 
-
-//#define check_PIN 11 relaybit
-#define check_PIN 4  /* LED bit1 */
-uint8_t p[20];
-uint32_t readIR20()
-
-{
-    uint32_t d = 0;
-
-    for (int i = 0; i < 15; i++) {
-        int first, second;
-        sleep_us(500);
-        p[i]=irBit();
-        d <<=1;
-        if (p[i]) 
-            d |=1;
-        gpio_put(check_PIN, 1);                 
-        gpio_put(check_PIN, 0);
-        sleep_us(500);
-    }
-
-    return(d & 0xFFFFF);
-}
 uint8_t calcChecksum4(uint16_t data)
 {
     return ((data >> 12) & 0xF)
@@ -163,6 +150,47 @@ uint8_t calcChecksum4(uint16_t data)
          ^ ((data >> 4)  & 0xF)
          ^ ( data        & 0xF);
 }
+
+uint8_t p[30];
+//#define check_PIN 11 relaybit
+int32_t readIR20(void)
+{
+    uint16_t data = 0;
+    uint8_t recv_sum = 0;
+
+    // 16bit受信
+    for (int i = 0; i < 15; i++) {
+        sleep_us(500);
+
+        p[i] = irBit();
+
+        data <<= 1;
+        if (p[i])
+            data |= 1;
+
+        sleep_us(500);
+    }
+
+    // チェックサム4bit受信
+    for (int i = 0; i < 4; i++) {
+        sleep_us(500);
+
+        p[16 + i] = irBit();
+
+        recv_sum <<= 1;
+        if (p[16 + i])
+            recv_sum |= 1;
+
+        sleep_us(500);
+    }
+
+    // チェックサム確認
+    if (recv_sum != calcChecksum4(data))
+        return -1;
+
+    return data;
+}
+
 
 
 int main()
@@ -292,17 +320,23 @@ printf("START\n");
 	            TIMER7 = 100;
 	        }
         }
- uint32_t c_hour, c_min;    
+ uint32_t c_hour, c_min,ir_data0;    
     if(waitIRStart()){
         ir_data=readIR20();
-        c_hour=ir_data >>8 & 0x1f;
-        c_min=ir_data & 0x3f;
-        t.hour=c_hour;
-        t.min=c_min;
-        rtc_set_datetime(&t);
-        TIMER4 = 20;   // Led display time 10sec
-        __asm volatile("nop");   // ここにブレーク
 
+    __asm volatile("nop");   // ここにブレーク
+        if(ir_data != -1){
+            printf("IRdata=%05x\n",ir_data);
+            c_hour=ir_data >>8 & 0x1f;
+            c_min=ir_data & 0x3f;
+            t.hour=c_hour;
+            t.min=c_min;
+            rtc_set_datetime(&t);
+            TIMER4 = 20;   // Led display time 10sec
+        }
+        else{
+            printf("IRdata error\n");
+        }
     }
     }//////////////////
     puts("Hello, world!");
